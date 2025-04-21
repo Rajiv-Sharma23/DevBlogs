@@ -27,7 +27,7 @@ const Navbar = () => {
         </Link>
 
         {/* Mobile Menu  */}
-        <div className="md:hidden">
+        <div className="md:hidden px-4">
           <div className="cursor-pointer text-4xl " onClick={clickHandler}>
             {open ? <X /> : <Menu />}
           </div>
@@ -35,7 +35,7 @@ const Navbar = () => {
           <div
             className={`w-full h-screen flex flex-col items-center justify-center 
           absolute top-16  ${open ? " right-0 " : "  -right-[100%]"}
-          text-black transition-all duration-500 gap-6 text-2xl font-semibold `}
+          text-black transition-all duration-500 gap-6 text-2xl font-semibold bg-[#e6e6ff] `}
           >
             <Link to={"/"}>Home</Link>
             <Link to={""}>Trending</Link>

@@ -6,7 +6,7 @@ import FeaturedPosts from "../components/FeaturedPosts";
 
 const HomePage = () => {
   return (
-    <div className="mt-4 flex flex-col gap-4">
+    <div className="mt-4 flex flex-col gap-4 ">
       {/* BreadCrump */}
       <div className="flex items-center gap-1">
         <Link to={"/"}>Home</Link>

@@ -5,9 +5,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
-  Link,
-} from "react-router-dom";
+ } from "react-router-dom";
 import HomePage from "./routes/HomePage.jsx";
 import PostListPage from "./routes/PostListPage.jsx";
 import SinglePostPage from "./routes/SinglePostPage.jsx";
