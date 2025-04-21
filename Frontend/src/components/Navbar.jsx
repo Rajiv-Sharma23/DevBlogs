@@ -8,6 +8,8 @@ import {
   UserButton,
 } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
+import Image from "./Image";
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -19,8 +21,8 @@ const Navbar = () => {
     <>
       <div className="w-full flex justify-between items-center h-16 md:h-20 ">
         {/* Logo */}
-        <Link to={"/"} className="flex items-center gap-4 text-2xl font-bold">
-          <img src="/logo.png" alt="logo" className="w-8 h-8" />
+        <Link to={"/"} className="flex items-center  text-2xl font-bold">
+          <Image/>
           <span>DevBlogs.</span>
         </Link>
 

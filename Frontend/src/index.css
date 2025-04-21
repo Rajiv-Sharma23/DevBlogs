@@ -9,6 +9,7 @@ body {
     overflow: hidden;
     font-family: 'montserrat'
 }
-/* a:hover {
-   
-} */
+
+.animatedButton {
+    animation-duration: 10000ms;
+}
