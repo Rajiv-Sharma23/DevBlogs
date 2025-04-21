@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const MainCategories = () => {
   return (
-    <div className="hidden md:flex bg-white rounded-3xl xl:rounded-full p-4 shadow-lg gap-8 items-center justify-center">
+    <div className="hidden md:flex bg-white rounded-3xl xl:rounded-full p-4 shadow-lg gap-6 items-center justify-center">
       {/* Links */}
       <div className="flex-1 flex items-center justify-between flex-wrap font-semibold">
         <Link
