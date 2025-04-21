@@ -13,3 +13,11 @@ body {
 .animatedButton {
     animation-duration: 10000ms;
 }
+
+.ql-container {
+ border: none !important;
+}
+
+.ql-toolbar.ql-snow {
+    border: none !important;
+}
