@@ -20,7 +20,7 @@ const Searching = () => {
       <input
         type="text"
         placeholder="Search a post..."
-        className="bg-transparent"
+        className="bg-transparent ring-0 outline-none"
       />
     </div>
   );
