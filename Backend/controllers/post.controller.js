@@ -40,10 +40,21 @@ export const createPost = async (req,res) => {
         if(!user){
             return res.status(401).json("User not found")
         }
-        const newPost = new Post({user: user._id, ...req.body});
+
+        let slug = req.body.title.replace(/ /g, "-").toLowerCase();
+
+        let existingPost = await Post.findOne({slug});
+
+        let counter = 2
+        while (existingPost) {
+            slug = `${slug}-${counter}`;
+            existingPost = await Post.findOne({slug});
+            counter++;
+        }
+        const newPost = new Post({user: user._id,slug,...req.body});
 
         const post = await newPost.save();
-        res.status(201).json({post});
+        res.status(200).json({post});
     } catch (error) {
         res.status(500).json({error});
         console.log({message: "Error in createPost",error});

@@ -12,12 +12,15 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.28.2",
     "@tailwindcss/vite": "^4.1.4",
+    "@tanstack/react-query": "^5.74.4",
+    "axios": "^1.8.4",
     "imagekitio-react": "^4.3.0",
     "lucide-react": "^0.501.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-quill-new": "^3.4.6",
     "react-router-dom": "^7.5.1",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {
