@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { X } from "lucide-react";
 import {
   SignedIn,
   SignedOut,
   SignInButton,
+  useAuth,
   UserButton,
 } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
@@ -14,6 +15,13 @@ import Image from "./Image";
 const Navbar = () => {
   const [open, setOpen] = useState(false);
 
+  const {getToken} = useAuth();
+
+  useEffect(() => {
+    getToken().then((token) => {
+      console.log(token);
+    })
+  },[ ])
   const clickHandler = () => {
     setOpen(!open);
   };

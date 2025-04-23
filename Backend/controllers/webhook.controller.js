@@ -23,17 +23,28 @@ export const clerkWebhook = async (req, res) => {
   const { type, data } = event;
 
   try {
-    if (type === "user.created") {
-      const newUser = new User({
-        clerkUserId: data.id,
-        username: data.username || data.email_addresses[0].email_address.split("@")[0],
-        email: data.email_addresses[0].email_address,
-        img: data.profile_image_url,
+    if(event.type === "user.created") {
+      const existingUser = await User.findOne({
+        $or: [
+          { clerkUserId: event.data.id },
+          { username: event.data.username || event.data.email_addresses[0].email_address.split("@")[0] }
+        ]
       });
-
+    
+      if (existingUser) {
+        return res.status(200).json({ message: "User already exists" });
+      }
+    
+      const newUser = new User({
+        clerkUserId : event.data.id,
+        username : event.data.username || event.data.email_addresses[0].email_address.split("@")[0],
+        email: event.data.email_addresses[0].email_address,
+        img: event.data.profile_image_url
+      });
+    
       await newUser.save();
-      console.log("✅ User created:", newUser.clerkUserId);
     }
+    
 
     if (type === "user.updated") {
       const updatedUser = await User.findOneAndUpdate(
