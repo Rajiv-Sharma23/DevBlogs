@@ -23,6 +23,15 @@ app.use("/webhooks", webhookRoutes);
 app.use(express.json());
 const port = process.env.PORT;
 
+// allow cross-origin requests
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", 
+    "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+
 app.use(clerkMiddleware())
 
 // app.get("/auth-state", (req, res) => {
