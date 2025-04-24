@@ -8,7 +8,7 @@ const postSchema = new Schema({
         ref : "User",
         required :true
     },
-    postImg : {
+    img : {
         type : String,
     },
     title : {

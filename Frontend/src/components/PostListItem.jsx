@@ -1,32 +1,50 @@
-import React from 'react'
-import Image from './Image'
-import { Link } from 'react-router-dom'
+import React from "react";
+import Image from "./Image";
+import { Link } from "react-router-dom";
+import { format } from "timeago.js";
 
-const PostListItem = () => {
+const PostListItem = ({ post }) => {
+  const imagePath = post.img?.includes("imagekit.io")
+    ? post.img.split("/").pop()
+    : post.img;
   return (
-    <div className='flex flex-col xl:flex-row gap-8'>
-        {/* Image */}
+    <div className="flex flex-col xl:flex-row gap-8 mb-12">
+      {/* Image */}
+      {post.img && (
         <div className="md:hidden xl:block xl:w-1/3 ">
-            <Image src={'postImg.jpeg'} className='rounded-2xl object-cover 'w='735' />
+          <Image
+            src={imagePath}
+            className="rounded-2xl object-cover "
+            w={"735"}
+          />
         </div>
-        {/* Details */}
-        <div className="flex flex-col gap-4 xl:w-2/3">
-            <Link to={'/test'} className='text-4xl font-semiboldbold'>Lorem Lorem ipsum dolor sit. ipsum dolor sit amet consectetur.</Link>
-            <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 ">
-                <span>
-                    Written By .
-                </span>
-                <Link className='text-blue-800 font-semibold ' >Rajiv Sharma</Link>
+      )}
 
-                <span>On .</span>
-                <Link className='text-blue-800 font-semibold' >Web design</Link>
-                <span>2 days ago</span>
-            </div>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum, minima. Consequuntur sunt facilis veritatis reiciendis eum sapiente maiores illo minus.Lorem, ipsum dolor sit amet consectetur adipisicing elit..</p>
-            <Link to={'/test'} className='text-blue-800 font-semibold underline text-sm'>Read More</Link>
+      {/* Details */}
+      <div className="flex flex-col gap-4 xl:w-2/3">
+        <Link to={`/${post.slug}`} className="text-4xl font-semiboldbold">
+          {post.title}
+        </Link>
+        <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 ">
+          <span>Written By .</span>
+          <Link className="text-blue-800 font-semibold ">
+            {post.user.username}
+          </Link>
+
+          <span>On .</span>
+          <Link className="text-blue-800 font-semibold">{post.category}</Link>
+          <span>{format(post.createdAt)}</span>
         </div>
+        <p>{post.desc}</p>
+        <Link
+          to={`/${post.slug}`}
+          className="text-blue-800 font-semibold underline text-sm"
+        >
+          Read More
+        </Link>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default PostListItem
+export default PostListItem;

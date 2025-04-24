@@ -1,201 +1,197 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Image from "../components/Image";
 import PostMenuActions from "../components/PostMenuActions";
 import Searching from "../components/Search";
 import Comments from "../components/Comments";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { format } from "timeago.js";
+
+const fetchPost = async (slug) => {
+  const res = await axios.get(`${import.meta.env.VITE_API_URL}/posts/${slug}`);
+  return res.data.post;
+};
 
 const SinglePostPage = () => {
+  const { slug } = useParams();
+  const { isPending, error, data } = useQuery({
+    queryKey: ["post", slug],
+    queryFn: () => fetchPost(slug),
+  });
+  
+  if (isPending) return "Loading...";
+  
+  if (error) return "Something went wrong" + error.message;
+  
+  if (!data) return "Post not found";
+  
+  const imagePath = data.img?.includes("imagekit.io")
+  ? data.img.split("/").pop()
+  : data.img;
   return (
-    <div className="flex flex-col gap-8 mt-5">
-      {/* Details */}
+    <div className="flex flex-col gap-8">
+      {/* detail */}
       <div className="flex gap-8">
-        {/* Title and details */}
         <div className="lg:w-3/5 flex flex-col gap-8">
-          <h1 className="text-xl md:2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-medium ">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti,
-            ex!
+          <h1 className="text-xl md:text-3xl xl:text-4xl 2xl:text-5xl font-semibold">
+            {data.title}
           </h1>
           <div className="flex items-center gap-2 text-gray-400 text-sm">
-            <span>Written By .</span>
-            <Link to={"/test"} className="text-blue-800">
-              Rajiv Sharma
-            </Link>
-            <span>On .</span>
-            <Link to={"/test"} className="text-blue-800">
-              Web design
-            </Link>
-            <span>2 days ago</span>
+            <span>Written by</span>
+            <Link className="text-blue-800">{data.user.username}</Link>
+            <span>on</span>
+            <Link className="text-blue-800">{data.category}</Link>
+            <span>{format(data.createdAt)}</span>
           </div>
-          <p className="text-gray-500 font-medium">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea, modi
-            aliquam dolores ex quidem cupiditate iste deserunt perspiciatis
-            laudantium pariatur? Nihil harum exercitationem quas tenetur
-            corporis alias culpa cumque earum.
-          </p>
+          <p className="text-gray-500 font-medium">{data.desc}</p>
         </div>
-        {/* Image */}
-        <div className="hidden lg:block w-2/5">
-          <Image
-            src={"postImg.jpeg"}
-            className="rounded-2xl object-cover"
-            w="500"
-          />
-        </div>
+        {data.img && (
+          <div className="hidden lg:block w-2/5">
+            <Image src={imagePath}  w="600"  className="rounded-2xl" />
+          </div>
+        )}
       </div>
-      {/* Content */}
-      <div className="flex flex-col md:flex-row gap-8">
-        {/* Text */}
+      {/* content */}
+      <div className="flex flex-col md:flex-row gap-12 justify-between">
+        {/* text */}
         <div className="lg:text-lg flex flex-col gap-6 text-justify">
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias neque
+            fugiat itaque quas esse sunt cupiditate possimus cumque asperiores,
+            dolorem, dolores eligendi amet perferendis illum repellat nam quam
+            facilis veritatis. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Sint ipsa fuga nihil numquam, quam dicta quas
+            exercitationem aliquam maxime quaerat, enim autem culpa sequi at!
+            Earum facere in ducimus culpa. Lorem ipsum dolor sit amet
+            consectetur, adipisicing elit. Libero fuga modi amet error aliquid
+            eos nobis vero soluta facilis, voluptatem, voluptates quod suscipit
+            obcaecati voluptate quaerat laborum, voluptatum dicta ipsum.
           </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet
-            inventore dolorum, nesciunt quo nulla rerum ut corporis molestiae
-            non atque sunt, unde accusantium quam aperiam expedita provident ad
-            assumenda? Ratione, dolorum fugiat. Harum vitae ducimus error, fuga
-            possimus, quo, dolorem quae labore consequatur repudiandae
-            perferendis! Expedita dolorum voluptatibus perspiciatis pariatur?
-          </p>
+          
         </div>
-        {/* Menu */}
-        <div className="px-4 h-max sticky top-8 text-sm ">
-          <h1 className="mt-2 mb-3 text-sm font-semibold">Author</h1>
-          <div className="flex flex-col gap-2">
-            <div className="flex gap-4 items-center ">
-              <Image
-                src={"userImg.jpeg"}
-                className="w-12 h-12 rounded-full object-cover"
-                w="50"
-                h="50"
-              />
-              <Link className="font-semibold text-blue-800 ">Rajiv Sharma</Link>
+        {/* menu */}
+        <div className="px-4 h-max sticky top-8">
+          <h1 className="mb-4 text-sm font-medium">Author</h1>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-8">
+           { console.log('Final Image URL:', data.user.img)}
+              {data.user?.img && (
+                <Image
+                  src={data.user.img}
+                  className="w-12 h-12 rounded-full object-cover"
+                  w="48"
+                  h="48"
+                />
+              )}
+              <Link className="text-blue-800">{data.user.username}</Link>
             </div>
-
-            <div className="flex  gap-2">
-              <p className="text-gray-600">
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
-            </div>
-            {/* Links */}
+            <p className="text-sm text-gray-500">
+              Lorem ipsum dolor sit amet consectetur
+            </p>
             <div className="flex gap-2">
               <Link>
-                <Image src={"facebook.svg"} />
+                <Image src="facebook.svg" />
               </Link>
               <Link>
-                <Image src={"instagram.svg"} />
+                <Image src="instagram.svg" />
               </Link>
             </div>
           </div>
-          <PostMenuActions />
-          <h1 className="mt-3 mb-3 text-sm font-semibold">Categories</h1>
-          <div className="flex flex-col gap-2  text-xs text-blue-800">
-            <Link to="/" className="underline">
-              {" "}
-              All
-            </Link>
-            <Link to="/" className="underline">
-              {" "}
+          <PostMenuActions post={data} />
+          <h1 className="mt-8 mb-4 text-sm font-medium">Categories</h1>
+          <div className="flex flex-col gap-2 text-sm">
+            <Link className="underline">All</Link>
+            <Link className="underline" to="/">
               Web Design
             </Link>
-            <Link to="/" className="underline">
-              {" "}
-              Devlopment
+            <Link className="underline" to="/">
+              Development
             </Link>
-            <Link to="/" className="underline">
-              {" "}
+            <Link className="underline" to="/">
               Databases
             </Link>
-            <Link to="/" className="underline">
-              {" "}
+            <Link className="underline" to="/">
               Search Engines
             </Link>
-            <Link to="/" className="underline">
-              {" "}
+            <Link className="underline" to="/">
               Marketing
             </Link>
           </div>
-
-          <h1 className="mt-3 mb-3 text-sm font-semibold">Search</h1>
+          <h1 className="mt-8 mb-4 text-sm font-medium">Search</h1>
           <Searching />
-
-         
         </div>
       </div>
-        <Comments/>
+      <Comments postId={data._id} />
     </div>
   );
 };
