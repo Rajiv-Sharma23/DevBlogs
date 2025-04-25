@@ -25,9 +25,9 @@ const SinglePostPage = () => {
   
   if (!data) return "Post not found";
   
-  const imagePath = data.img?.includes("imagekit.io")
-  ? data.img.split("/").pop()
-  : data.img;
+  const imagePath = data.user.img.includes("imagekit.io")
+  ? data.user.img.split("/").pop()
+  : data.user.img;
   return (
     <div className="flex flex-col gap-8">
       {/* detail */}
@@ -45,7 +45,7 @@ const SinglePostPage = () => {
           </div>
           <p className="text-gray-500 font-medium">{data.desc}</p>
         </div>
-        {data.img && (
+        {data.user.img && (
           <div className="hidden lg:block w-2/5">
             <Image src={imagePath}  w="600"  className="rounded-2xl" />
           </div>
@@ -145,7 +145,7 @@ const SinglePostPage = () => {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-8">
            { console.log('Final Image URL:', data.user.img)}
-              {data.user?.img && (
+              {data.user.img && (
                 <Image
                   src={data.user.img}
                   className="w-12 h-12 rounded-full object-cover"

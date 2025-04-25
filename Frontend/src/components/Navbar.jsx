@@ -19,7 +19,7 @@ const Navbar = () => {
 
   useEffect(() => {
     getToken().then((token) => {
-      console.log(token);
+    
     })
   },[ ])
   const clickHandler = () => {

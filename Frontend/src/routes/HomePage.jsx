@@ -5,6 +5,7 @@ import MainCategories from "../components/MainCategories";
 import FeaturedPosts from "../components/FeaturedPosts";
 import PostList from "../components/PostList";
 
+
 const HomePage = () => {
   return (
     <div className="mt-4 flex flex-col gap-4 ">
@@ -29,6 +30,7 @@ const HomePage = () => {
             blanditiis repudiandae ducimus velit neque sint. enim optio
             similique sequi alias sunt!
           </p>
+          
         </div>
         {/* animated menu */}
         <Link to={"/write"} className="hidden md:block relative">
