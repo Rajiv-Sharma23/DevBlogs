@@ -51,6 +51,7 @@ const SinglePostPage = () => {
           </div>
         )}
       </div>
+      
       {/* content */}
       <div className="flex flex-col md:flex-row gap-12 justify-between">
         {/* text */}

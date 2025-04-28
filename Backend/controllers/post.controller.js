@@ -12,14 +12,14 @@ export const getPosts = async (req, res) => {
 
   try {
     const posts = await Post.find()
-      .populate("user", "username")
+      .populate("user", "username email img clerkUserId")
       .limit(limit)
       .skip((page - 1) * limit);
 
-      const totalPosts = await Post.countDocuments();
-      const hasMore = page * limit < totalPosts;
+    const totalPosts = await Post.countDocuments();
+    const hasMore = page * limit < totalPosts;
 
-    res.status(200).json({ posts,hasMore });
+    res.status(200).json({ posts, hasMore });
   } catch (error) {
     res.status(500).json({ error });
     console.log({ message: "Error in getPosts", error });
@@ -32,7 +32,7 @@ export const getPost = async (req, res) => {
   try {
     const post = await Post.findOne({ slug: req.params.slug }).populate(
       "user",
-      "username img"
+      "username img clerkUserId email "
     );
     res.status(200).json({ post });
   } catch (error) {
@@ -86,7 +86,7 @@ export const deletePost = async (req, res) => {
     if (!user) {
       return res.status(401).json("User not found");
     }
-    const deletePost = await Post.findByIdAndDelete({
+    const deletePost = await Post.findOneAndDelete({
       _id: req.params.id,
       user: user._id,
     });
