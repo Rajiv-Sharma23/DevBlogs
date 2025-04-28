@@ -82,6 +82,35 @@ const PostMenuActions = ({ post }) => {
     saveMutation.mutate();
   };
 
+
+  const featureMutation = useMutation({
+    mutationFn: async () => {
+      const token = await getToken();
+      return axios.patch(
+        `${import.meta.env.VITE_API_URL}/posts/feature`,
+        {
+          postId: post._id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["post",post.slug] });
+    },
+    onError: (error) => {
+      toast.error(error.response.data);
+    },
+  });
+
+  const handleFeature = () => {
+    if (!user) return navigate("/login");
+    featureMutation.mutate();
+  };
+
   return (
     <div>
       <h1 className="mt-3 mb-3 text-sm font-semibold">Actions</h1>
@@ -106,16 +135,26 @@ const PostMenuActions = ({ post }) => {
             </span>
           )}
         </div>
-        ) }{
+        ) }
+      {/* {console.log("postwa", post.user, "user", user)} */}
+      {
           isAdmin && (
-            <div className="flex items-center gap-2 py-1 text-sm cursor-pointer font-medium">
-              <Star size={16} />
-              Feature this Post
+            <div className="flex items-center gap-2 py-1 text-sm cursor-pointer font-medium" onClick={handleFeature}>
+              <Star size={16}  fill={featureMutation.isPending
+                  ? post.isFeatured
+                    ? "none"
+                    : "black"
+                  : post.isFeatured
+                  ? "black"
+                  : "none"}/>
+             {featureMutation.isPending ? (
+               <div className="text-sm text-green-600 font-bold ">featuring</div>
+             ) : post.isFeatured ? <span>Unfeature this Post</span> : (
+               <span>Feature this Post</span> 
+             )}
             </div>
           )
-        }
-      {/* {console.log("postwa", post.user, "user", user)} */}
-
+        } 
       {/* Ownership verification via Clerk user ID */}
       {user && (post?.user?.clerkUserId === user.id || isAdmin) && (
         <div
