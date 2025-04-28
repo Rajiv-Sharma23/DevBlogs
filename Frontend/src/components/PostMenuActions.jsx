@@ -1,6 +1,6 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { Save, SaveOff, Trash2 } from "lucide-react";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { Save, SaveOff, Star, Trash2 } from "lucide-react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -27,6 +27,7 @@ const PostMenuActions = ({ post }) => {
     },
   });
 
+  const isAdmin = user?.publicMetadata?.role === "admin" || false;
   const isSaved = savedPosts?.data?.some((p) => p === post._id) || false;
 
   const deleteMutation = useMutation({
@@ -51,7 +52,7 @@ const PostMenuActions = ({ post }) => {
     deleteMutation.mutate();
   };
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   const saveMutation = useMutation({
     mutationFn: async () => {
@@ -79,7 +80,6 @@ const PostMenuActions = ({ post }) => {
   const handleSave = () => {
     if (!user) return navigate("/login");
     saveMutation.mutate();
-    queryClient.invalidateQueries({ queryKey: ["savedPosts"] });
   };
 
   return (
@@ -94,11 +94,6 @@ const PostMenuActions = ({ post }) => {
           className="flex items-center gap-2 py-1 text-sm cursor-pointer"
           onClick={handleSave}
         >
-          {/* <Save
-            size={16}
-            {...(isSaved ? "" : "")}
-          /> */}
-
           {saveMutation.isPending ? (
             <div className="text-sm text-green-600 font-bold ">in Progress</div>
           ) : isSaved ? (
@@ -111,11 +106,18 @@ const PostMenuActions = ({ post }) => {
             </span>
           )}
         </div>
-      )}
+        ) }{
+          isAdmin && (
+            <div className="flex items-center gap-2 py-1 text-sm cursor-pointer font-medium">
+              <Star size={16} />
+              Feature this Post
+            </div>
+          )
+        }
       {/* {console.log("postwa", post.user, "user", user)} */}
 
       {/* Ownership verification via Clerk user ID */}
-      {user && post?.user?.clerkUserId === user.id && (
+      {user && (post?.user?.clerkUserId === user.id || isAdmin) && (
         <div
           className="flex items-center gap-2 py-1 text-sm cursor-pointer text-red-600 font-medium"
           onClick={handleDelete}

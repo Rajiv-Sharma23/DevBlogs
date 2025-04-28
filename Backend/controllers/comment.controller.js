@@ -4,7 +4,7 @@ import Comment from "../models/comment.model.js";
 export const getPostComments = async (req, res) => {
   try {
     const comments = await Comment.find({ post: req.params.postId })
-      .populate("user", "username img")
+      .populate("user", "username img clerkUserId email ")
       .sort({ createdAt: -1 });
     res.json({ comments });
   } catch (error) {
@@ -33,7 +33,7 @@ export const addComment = async (req, res) => {
 
     setTimeout(() => {
       res.status(201).json(savedComment);
-    }, 3000);
+    }, 1000);
   } catch (error) {
     res.status(500).json({ message: "Internal server error", error });
     console.log("Error in addComment", error);
@@ -46,6 +46,13 @@ export const deleteComment = async (req, res) => {
 
     if (!clerkUserId) {
       return res.status(401).json("Not authenticated");
+    }
+
+    const role = req.auth.sessionClaims?.metadata?.role || "user";
+
+    if (role === "admin") {
+      await Comment.findByIdAndDelete(req.params.id);
+      return res.status(200).json("Comment has been deleted");
     }
 
     const user = await User.findOne({ clerkUserId });
