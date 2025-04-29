@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Searching from "./Search";
 
 const MainCategories = () => {
   return (
@@ -46,7 +47,8 @@ const MainCategories = () => {
       </div>
       <span className="text-xl font-medium">| </span>
       {/* Search */}
-      <div className="bg-gray-100 rounded-full p-2 flex items-center gap-2">
+      <Searching/>
+      {/* <div className="bg-gray-100 rounded-full p-2 flex items-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -63,7 +65,7 @@ const MainCategories = () => {
           <path d="m21 21-4.3-4.3" />
         </svg>
         <input type="text" placeholder="search a post..." className="bg-transparent"/>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/post-list", element: <PostListPage /> },
+      { path: "/posts", element: <PostListPage /> },
       { path: "/:slug", element: <SinglePostPage /> },
       { path: "/write", element: <Write /> },
       { path: "/login", element: <LoginPage /> },
